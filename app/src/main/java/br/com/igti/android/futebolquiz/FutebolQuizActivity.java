@@ -17,10 +17,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 /**
- *
  * Projeto de perguntas sobre futebol para o trabalho prático da disciplina
  * Arquitetura de Aplicações Android do curso MBA em Desenvolvimento Mobile do IGTI.
- *
+ * <p>
  * Alunos:
  * - Bill Carlos Cabral
  * - Paulo Estêvão da Cruz Lima Júnior
@@ -35,7 +34,6 @@ public class FutebolQuizActivity extends Activity {
 
     private Button mBotaoVerdade;
     private Button mBotaoFalso;
-    //private TextView mConteudoCard;
     private CardView mCardView;
 
     private int mIndiceAtual = 0;
@@ -53,7 +51,7 @@ public class FutebolQuizActivity extends Activity {
         public void onClick(View v) {
             checaResposta(true);
             mIndiceAtual = (mIndiceAtual + 1) % mPerguntas.length;
-            atualizaQuestao(false);
+            atualizaQuestao();
             revelaCard();
         }
     };
@@ -63,24 +61,16 @@ public class FutebolQuizActivity extends Activity {
         public void onClick(View v) {
             checaResposta(false);
             mIndiceAtual = (mIndiceAtual + 1) % mPerguntas.length;
-            atualizaQuestao(false);
+            atualizaQuestao();
             revelaCard();
         }
     };
 
-    private void atualizaQuestao(boolean primeiraQuestao) {
+    private void atualizaQuestao() {
         int questao = mPerguntas[mIndiceAtual].getQuestao();
-        //mConteudoCard.setText(questao);
-        //aqui devemos criar novo fragmento
-        if (primeiraQuestao) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_content, createFragment(questao))
-                    .commit();
-        } else {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_content, createFragment(questao))
-                    .commit();
-        }
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_content, createFragment(questao))
+                .commit();
 
     }
 
@@ -103,6 +93,7 @@ public class FutebolQuizActivity extends Activity {
 
         int recursoRespostaId = 0;
 
+        // implementação do feedback sonoro
         if (botaoPressionado == resposta) {
             recursoRespostaId = R.string.toast_acertou;
             player = MediaPlayer.create(this, R.raw.cashregister);
@@ -125,11 +116,6 @@ public class FutebolQuizActivity extends Activity {
         savedInstanceState.putInt(KEY_INDICE, mIndiceAtual);
     }
 
-   /* private Fragment createFragment() {
-        String textName = (String) getIntent().getSerializableExtra(TextViewFragment.ARG_TEXT_NAME);
-        return TextViewFragment.newInstance(textName);
-    }*/
-
     private Fragment createFragment(int questao) {
         return TextViewFragment.newInstance(questao);
     }
@@ -148,7 +134,7 @@ public class FutebolQuizActivity extends Activity {
         mBotaoFalso = (Button) findViewById(R.id.botaoFalso);
         mBotaoFalso.setOnClickListener(mBotaoFalsoListener);
 
-        atualizaQuestao(true);
+        atualizaQuestao();
 
         mCardView = (CardView) findViewById(R.id.cardview);
 
@@ -206,6 +192,7 @@ public class FutebolQuizActivity extends Activity {
         super.onResume();
         Log.d(TAG, "onResume()");
 
+        // implementação de mensagem de boas-vindas no primeiro acesso
         boolean primeiraVez = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(PREF_PRIMEIRA_VEZ, true);
 
         if (primeiraVez) {
