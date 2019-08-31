@@ -14,12 +14,18 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.UUID;
-
-
+/**
+ *
+ * Projeto de perguntas sobre futebol para o trabalho prático da disciplina
+ * Arquitetura de Aplicações Android do curso MBA em Desenvolvimento Mobile do IGTI.
+ *
+ * Alunos:
+ * - Bill Carlos Cabral
+ * - Paulo Estêvão da Cruz Lima Júnior
+ * - Tulio Lopes Rodrigues
+ */
 public class FutebolQuizActivity extends Activity {
 
     private static final String TAG = "FutebolQuizActivity";
